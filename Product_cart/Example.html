@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <title>Books</title>
+    <style>
+        .div1 {
+            border: 1px solid black;
+            height: 50px;
+            width: 100%;
+            background-color: black;
+            color: white;
+        }
+
+        .div1 h2 {
+            margin-top: 10px;
+        }
+
+        .div2 {
+            border: 1px solid black;
+            height: 400px;
+            width: 49%;
+            float: left;
+            background-color: darkolivegreen;
+        }
+
+        .div3 {
+            border: 1px solid black;
+            height: 400px;
+            width: 49%;
+            margin-left: 51%;
+            background-color: darkkhaki;
+        }
+
+        .div3 .data {
+            font-size: 18px;
+            padding: 5px;
+        }
+        .div3 .delete:hover
+        {
+            background-color: red;
+        }
+        .div4 {
+            margin-top: 2px;
+            border: 1px solid black;
+            width: 100%;
+            height: 250px;
+            background-color: khaki;
+        }
+
+        .div4 input {
+            font-size: 18px;
+        }
+
+        .div4 #assign {
+            border-radius: 15px;
+        }
+        .div4 #assign:hover
+        {
+            border-radius: 15px;
+            background-color: darkolivegreen;
+            color:white;
+        }
+
+        .div4 #books_choice {
+            margin: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <center>
+            <h2>Books Management</h2>
+        </center>
+    </div>
+    <div class="div2" id="available">
+        <center>
+            <h2>Available Books</h2>
+
+        </center>
+    </div>
+    <div class="div3">
+        <center>
+            <h2>Assigned Books</h2><br>
+            <p id="assign_user"></p>
+        </center>
+    </div>
+    <div class="div4" id="assign">
+        <h2 style="margin-left: 10px">Assigned</h2><br>
+        <select id="books_choice">
+            <option value="" disabeld selected hidden>Select book here</option>
+        </select>
+        <input type="text" id="username" placeholder="Username">
+        <input type="button" id="assign" value="Assign" onclick="assign()">
+
+    </div>
+    <script>
+        var array = [];
+        var books_array = [
+            {
+                "name": "Harry Potter",
+            },
+            {
+                "name": "The Chronicles of Narnia",
+            },
+            {
+                "name": "Wings of Fire",
+            },
+            {
+                "name": "Believe in your self",
+            },
+            {
+                "name": "The Silent Patient",
+            },
+            {
+                "name": "Holding up the universe"
+            }
+        ]
+        localStorage.setItem("Books_details", JSON.stringify(books_array))
+        getdata();
+        function getdata()
+        {
+        var books_object = localStorage.getItem("Books_details");
+        if (books_object) {
+            books_object = JSON.parse(books_object);
+            for (i = 0; i < books_object.length; i++) {
+                var books_list = document.createElement("ol");
+                books_list.id = "books_id";
+                document.getElementById("available").append(books_list);
+
+                var list1 = document.createElement("li");
+                list1.id = "books_avail";
+                list1.innerHTML = books_object[i].name;
+                list1.style.marginLeft = "30px";
+                list1.style.fontSize = "18px";
+                list1.style.color = "white";
+                list1.style.padding="5px";
+                document.getElementById("books_id").append(list1);
+
+                var dropdown_choice = document.createElement("option")
+                dropdown_choice.innerHTML = books_object[i].name
+                document.getElementById("books_choice").append(dropdown_choice);
+            }
+        }
+    }
+        function assign() {
+            var u_name = document.getElementById("username").value;
+            var b_choice = document.getElementById("books_choice").value;
+            if (b_choice == "") {
+                alert("Please select the book!!!");
+                return false;
+            }
+            else if (u_name == "") {
+                alert("Please enter the username!!");
+                return false;
+            }
+            else {
+
+                console.log(u_name);
+                console.log(b_choice);
+                var array = JSON.parse(localStorage.getItem("Users_Assign"));
+                if (array == null) {
+                    var array = [];
+                }
+                var user_assign =
+                {
+                    "id": Math.random(),
+                    "books_choice": b_choice,
+                    "Username": u_name
+                }
+                array.push(user_assign);
+                localStorage.setItem("Users_Assign", JSON.stringify(array))
+                assign_book = document.getElementById("assign_user");
+                book_assign = JSON.parse(localStorage.getItem("Users_Assign"));
+                assign_book.innerHTML = "";
+                for (var i = 0; i < book_assign.length; i++) {
+                    var assign_id = book_assign[i].id;
+                    assign_book.innerHTML += book_assign[i].books_choice + "   Book is Assigned to  " + book_assign[i].Username + "  " + `<button class="delete" onclick="delete1(${assign_id})"> <i class="far fa-trash-alt"></i></button>` + "<br/>" + "<br/>";
+                    delete2(i);
+
+                }
+                var choice = document.getElementById("books_choice");
+                choice.remove(choice.selectedIndex);
+                document.getElementById("username").value = "";
+                document.getElementById("books_id").innerHTML = "";
+                document.getElementById("books_choice").innerHTML = "";
+                getdata();
+                book_assign = JSON.parse(localStorage.getItem("Users_Assign"));
+                assign_book.innerHTML = "";
+                for (i = 0; i < book_assign.length; i++) {
+                    var assign_id = book_assign[i].id;
+                    assign_book.innerHTML += book_assign[i].books_choice + "   Book is Assigned to  " + book_assign[i].Username + "  " + `<button class="delete" onclick="delete1(${assign_id})"> <i class="far fa-trash-alt"></i></button>` + "<br/>" + "<br/>";
+                    //  alert(assign_id);
+                    //   delete2(i);
+                }
+            }
+        }
+        function delete1(id) {
+            var get = JSON.parse(localStorage.getItem("Users_Assign"));
+            var get_books = JSON.parse(localStorage.getItem("Books_details"))
+            //console.log(typeof get);
+            
+            if (confirm("Are you Sure you want to delete???")) {
+                for (i = 0; i < get.length; i++) {
+
+                    var temp = get[i];
+                    console.log(temp.id);
+                    if (temp.id == id) {
+                        var object_books=
+                        {
+                            "name":book_assign[i].books_choice,
+                        }
+                        get_books.push(object_books);
+                        localStorage.setItem("Books_details",JSON.stringify(get_books));
+                        document.getElementById("books_id").innerHTML="";
+                        document.getElementById("books_choice").innerHTML="";
+                        get.splice(i, 1);
+                        break;
+                    }
+
+                }
+                localStorage.setItem("Users_Assign", JSON.stringify(get));
+                assign_book = document.getElementById("assign_user");
+                book_assign = JSON.parse(localStorage.getItem("Users_Assign"));
+                assign_book.innerHTML = "";
+                for (i = 0; i < book_assign.length; i++) {
+                    var assign_id = book_assign[i].id;
+                    assign_book.innerHTML += book_assign[i].books_choice + "   Book is Assigned to  " + book_assign[i].Username + "  " + `<button class="delete" onclick="delete1(${assign_id})"> <i class="far fa-trash-alt"></i></button>` + "<br/>" + "<br/>";
+                    
+                }
+                getdata();
+               
+            }
+
+        }
+        function delete2(id) {
+            var book1 = JSON.parse(localStorage.getItem("Books_details"));
+            var user1 = JSON.parse(localStorage.getItem("Users_Assign"));
+            var choice1 = document.getElementById("books_choice").value;
+
+            for (i = 0; i < book1.length; i++) {
+                if (book1[i].name == choice1) {
+                    book1.splice(i, 1);
+                    break;
+                }
+            }
+            localStorage.removeItem("Books_details");
+            localStorage.setItem("Books_details", JSON.stringify(book1));
+        }
+    </script>
+</body>
+
+</html>

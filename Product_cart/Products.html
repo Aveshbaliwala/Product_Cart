@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <title>Products</title>
+</head>
+<style>
+    body
+    {
+        background-color: lemonchiffon;
+    }
+    .nav {
+        height: 50px;
+        background-color: darkolivegreen;
+        color: white;
+    }
+
+    .nav .details {
+        margin: 3px;
+        height: 40px;
+        width: 95%;
+        float: left;
+    }
+
+    .nav .details h2 {
+        margin: 3px;
+        font-size: 32px;
+        font-family: Times New Roman;
+    }
+
+    .nav .icon {
+        margin: 3px;
+        height: 40px;
+        width: 50px;
+        margin-left: 96%;
+    }
+
+    .nav .icon .cart_icon {
+        margin: 2px;
+        height: 35px;
+    }
+
+    .nav .icon .cart_icon h1 {
+        margin: 1px;
+        margin-left: 5px;
+        padding-top: 2px;
+    }
+
+    .product_Detail {
+        height: 450px;
+        background-color: lemonchiffon;
+    }
+    .product_Detail #product_detail1
+    {
+         margin: 15px;
+            height: 380px;
+            width: 230px;
+            border: 1px solid black;
+            float: left;
+            border-radius: 10px;
+            background-color: darkkhaki;
+            color: #212529;
+    }
+    .product_Detail #product_detail1 #image1
+    {
+        margin: 8px;
+            height: 200px;
+            width: 210px;
+            border: 1px solid white;
+            border-radius: 20px;
+    }
+    .product_Detail #product_detail1 p
+    {
+        text-align: center;
+            font-size: 18px;
+            font-family: cursive;
+    }
+    .product_Detail #product_detail1 input
+    {
+     width: 7%;
+            margin-left: 20px;
+            text-align: center;
+            border-color: white;
+    }
+    .product_Detail #product_detail1 #btn_minus
+    {
+        margin: 10px;
+            margin-left: 50px;
+            height: 25px;
+            width: 25px;
+    }
+    .product_Detail #product_detail1 #btn_plus
+    {
+        margin: 10px;
+            margin-left: 30px;
+            height: 25px;
+            width: 25px;
+    }
+    .cart {
+        height: 50px;
+        background-color: lemonchiffon;
+    }
+
+    .cart button {
+        margin: 10px;
+        height: 35px;
+        font-size: 18px;
+        width: 130px;
+        border-radius: 10px;
+        background-color: darkolivegreen;
+        color: white;
+        border-color: darkolivegreen;
+    }
+</style>
+
+<body>
+    <div class="nav">
+        <div class="details">
+            <center>
+                <h2>Home</h2>
+            </center>
+        </div>
+        <div class="icon">
+            <div class="cart_icon">
+                <h1><i class="bi bi-cart4" onclick="window.location.href='Cart.html';"></i></h1>
+            </div>
+        </div>
+    </div>
+    <div class="product_Detail" id="Products1">
+    </div>
+    <div class="cart">
+        <center>
+            <button onclick="mycart()">Add to Cart</button>
+        </center>
+    </div>
+
+    <script>
+        var product_array = [
+            {
+                "product_Name": "Cookies",
+                "price": "120",
+                "image": "product1.png",
+            },
+            {
+                "product_Name": "Coffee",
+                "price": "150",
+                "image": "product2.png",
+            },
+            {
+                "product_Name": "Tea",
+                "price": "200",
+                "image": "image3.png",
+            },
+            {
+                "product_Name": "Juice",
+                "price": "80",
+                "image": "product4.png",
+            }
+        ]
+        localStorage.setItem("Products", JSON.stringify(product_array));
+
+        var product_object = localStorage.getItem("Products");
+        if (product_object) {
+            product_object = JSON.parse(product_object);
+            for (i = 0; i < product_object.length; i++) {
+                var div2 = document.createElement("div");
+                div2.id = "product_detail1";
+
+                var photo = document.createElement("img");
+                photo.id = "image1";
+                photo.src = product_object[i].image;
+                var product_name = document.createElement("p");
+                product_name.id = "product_name1";
+                product_name.innerHTML = " Product: " + product_object[i].product_Name;
+
+                var price = document.createElement("p");
+                price.id = "product_price";
+                price.innerHTML = " Price: " + product_object[i].price;
+
+                var dec = document.createElement("button");
+                dec.addEventListener('click', () => {
+                    decrease(id);
+                });
+                dec.id = "btn_minus";
+                dec.innerHTML = "-";
+
+                var num = document.createElement("input");
+                num.id = i;
+                const id = num.id;
+                num.readOnly = true;
+                num.value = "0";
+
+                var incr = document.createElement("button");
+                incr.addEventListener('click', () => {
+                    increase(id);
+                });
+                incr.id = "btn_plus";
+                incr.innerHTML = "+";
+
+                div2.append(photo, product_name, price, dec, num, incr);
+                document.getElementById("Products1").append(div2);
+                function decrease(id) {
+                    var product_object = localStorage.getItem("Products");
+                    if (product_object) {
+                        product_object = JSON.parse(product_object);
+                        for (var i = 0; i < product_object.length; i++) {
+                            if (id == i) {
+                                var counter = parseInt(document.getElementById(i).value);
+                                if (counter != 0) {
+                                    counter--;
+                                    document.getElementById(i).value = counter;
+                                }
+                                else {
+                                    console.log("You can't decrease the quantity")
+                                }
+                            }
+                        }
+                    }
+                }
+                function increase(id) {
+                    var product_object = localStorage.getItem("Products");
+                    if (product_object) {
+                        product_object = JSON.parse(product_object);
+                        for (var i = 0; i < product_object.length; i++) {
+                            if (id == i) {
+                                var counter = parseInt(document.getElementById(i).value);
+                                counter++;
+                                document.getElementById(i).value = counter;
+                                console.log(counter);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            function mycart() {
+                var array = [];
+                var product_object = localStorage.getItem("Products")
+                if (product_object) {
+                    product_object = JSON.parse(product_object);
+                    for (i = 0; i < product_object.length; i++) {
+                        var product_cart = {
+                            "product_Name": product_object[i].product_Name,
+                            "price": product_object[i].price,
+                            "image": product_object[i].image,
+                            "Quantity": document.getElementById(i).value,
+                            "Amount":""
+                        }
+                        array.push(product_cart);
+                        localStorage.setItem("Product_Cart", JSON.stringify(array));
+                    }
+                }
+            }
+        }
+        else {
+            console.log("There is no object named product_object");
+        }
+    </script>
+</body>
+
+</html>

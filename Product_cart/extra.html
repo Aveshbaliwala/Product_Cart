@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASSIGN BOOKS</title>
+</head>
+<body>
+    <!-- <ol id="tag1">
+        <li>History</li>
+        <li>Funny</li>
+        <li>Story</li>
+        <li>regions</li>
+    </ol>
+    <select  id="attribute">
+        
+    </select>
+     -->
+     <form>Select your favorite fruit:
+        <select id="mySelect">
+            <ol>
+            <option value="a"><li>aa</li></option>
+            <option value="o"><li>bb</li></option>
+            <option value="p"><li>cc</li></option>
+            <option value="b"><li>dd</li></option>
+            </ol>
+        </select>
+    </form>
+    <button type="button" onclick="displayResult()">Display text of all options</button>
+</body>
+
+ <script>
+    function displayResult() {
+    var x = document.getElementById("mySelect");
+    var txt = "All options: ";
+    var i;
+    for (i = 0; i < x.length; i++) {
+        txt = txt + "\n" + x.options[i].text;
+    }
+    alert(txt);
+  
+}
+</script> 
+<!-- <script>
+    var drop=document.createElement("dropdown");
+    drop.id="dropid";
+    drop.append(li);
+    var dropdown = document.getElementsByClassName("dropdown");
+var attribute;
+var myFunction = function() {
+attribute = this.getAttribute("data-target");
+    var x = document.getElementById(attribute);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+
+};
+for (var i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener('click', myFunction, false);
+}
+</script> -->
+</html>
